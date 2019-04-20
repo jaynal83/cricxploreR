@@ -1,0 +1,10 @@
+Utilize the urlConstructor.R script to create players profile database. This database will contain
+
+1. Player's ID (from player's url)
+2. Country
+3. Player's Name
+4. Player's date of birth
+5. Height (if available)
+6. Playing role
+7. Batting style
+8. Bowling style
