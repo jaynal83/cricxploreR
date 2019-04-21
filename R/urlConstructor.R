@@ -11,13 +11,13 @@ library(purrr)
 # to contruct players url later on
 
 get_country_matchtype_url <- function(url){
-  htmlpage <- read_html(url)
+  html_page <- read_html(url)
 
-  country_urlA <- htmlpage %>%
+  country_urlA <- html_page %>%
     html_nodes(".ciPlayersHomeCtryList a") %>%
     html_attr("href") 
   
-  countryID <- players_htmlpage %>%
+  countryID <- html_page %>%
     html_nodes(".ciPlayersHomeCtryList option") %>%
     html_attr("value") 
   countryID <- countryID[nchar(countryID)>0]
@@ -59,7 +59,7 @@ base_url <- get_country_matchtype_url(
 )
 
 # Player url for all countries
-test_player_url <- map(base_url$test_url, get_player_url)
-odi_player_url <- map(base_url$odi_url, get_player_url)
-t20_player_url <- map(base_url$t20_url, get_player_url)
+test_player_url <- unlist(map(base_url$test_url, get_player_url))
+odi_player_url <- unlist(map(base_url$odi_url, get_player_url))
+t20_player_url <- unlist(map(base_url$t20_url, get_player_url))
 
