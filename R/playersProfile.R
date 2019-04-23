@@ -19,6 +19,11 @@ get_player_characteristics <- function(player_url){
   player_name <- str_trim(unlist(str_split(player_info[1], pattern = "\n"))[2])
   player_dob <- mdy(player_info[str_detect(player_info, pattern = "Born")])
   
+  player_country <- html_page_player %>%
+    html_nodes(".ciPlayerlhscountrytxt") %>%
+    html_text() %>%
+    first()
+  
   playing_role <- str_trim(
     str_replace(
       player_info[str_detect(player_info, pattern = "Playing role")], 
@@ -43,6 +48,20 @@ get_player_characteristics <- function(player_url){
     )
   )
   
+  if(length(player_id)==0)
+    player_id <- NA
+  
+  
+  if(length(player_name)==0)
+    player_name <- NA
+  
+  if(length(player_dob)==0)
+    player_dob <- NA
+  
+  if(length(player_country)==0)
+    player_country <- NA
+  
+
   if(length(playing_role)==0)
     playing_role <- NA
   
@@ -55,6 +74,7 @@ get_player_characteristics <- function(player_url){
   df_player_char <- data.frame(player_id, 
                                player_name, 
                                player_dob, 
+                               player_country,
                                playing_role, 
                                batting_style, 
                                bowling_style,
