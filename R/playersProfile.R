@@ -82,7 +82,27 @@ get_player_characteristics <- function(player_url){
   df_player_char
 }
 
+# ODI player profile
 df_player_odi<-map_dfr(odi_player_url, get_player_characteristics)
 
-write.csv(df_player_odi, file = "df_player_odi.csv", row.names = F)
+df_player_odi_noNA <- df_player_odi %>%
+  filter(!is.na(player_id))
+
+write.csv(df_player_odi_noNA, file = "df_player_odi.csv", row.names = F)
+
+# Test plyaer profile
+df_player_test<-map_dfr(test_player_url, get_player_characteristics)
+
+df_player_test_noNA <- df_player_test %>%
+  filter(!is.na(player_id))
+
+write.csv(df_player_test_noNA, file = "df_player_test.csv", row.names = F)
+
+# T20 plyaer profile
+df_player_t20<-map_dfr(t20_player_url, get_player_characteristics)
+
+df_player_t20_noNA <- df_player_t20 %>%
+  filter(!is.na(player_id))
+
+write.csv(df_player_t20_noNA, file = "df_player_t20.csv", row.names = F)
 
