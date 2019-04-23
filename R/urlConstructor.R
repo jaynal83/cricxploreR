@@ -63,3 +63,22 @@ test_player_url <- unlist(map(base_url$test_url, get_player_url))
 odi_player_url <- unlist(map(base_url$odi_url, get_player_url))
 t20_player_url <- unlist(map(base_url$t20_url, get_player_url))
 
+# get worldcup 2019 squad urls
+
+get_cwc19_squad_urls <- function(url){
+  html_page <- read_html(url)
+  squad_url <- html_page %>%
+    html_nodes(".squads_list a") %>%
+    html_attr("href")
+  squad_url <- str_c("http://www.espncricinfo.com", squad_url)
+  country_name <- html_page %>%
+    html_nodes(".squads_list a") %>%
+    html_text()
+  country_name <- str_trim(str_replace(country_name, pattern = "Squad", replacement = ""))
+  out <- data.frame(country_name = country_name,
+                    squad_url = squad_url, 
+                    stringsAsFactors = F)
+  out
+}
+
+cwc19_squad_urls <- get_cwc19_squad_urls(url = "http://www.espncricinfo.com/ci/content/squad/index.html?object=1144415")
