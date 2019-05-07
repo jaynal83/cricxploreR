@@ -4,7 +4,7 @@ library(rvest)
 library(stringr)
 library(purrr)
 library(dplyr)
-
+library(lubridate)
 
 get_player_characteristics <- function(player_url){
   

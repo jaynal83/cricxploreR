@@ -2,6 +2,7 @@
 library(rvest)
 library(stringr)
 library(purrr)
+library(dplyr)
 
 # Function to get
 # 1. Country url
@@ -82,3 +83,30 @@ get_cwc19_squad_urls <- function(url){
 }
 
 cwc19_squad_urls <- get_cwc19_squad_urls(url = "http://www.espncricinfo.com/ci/content/squad/index.html?object=1144415")
+
+
+################
+# Constructing Series URLs
+###############
+
+get_series_urls <- function(url){
+  html_page <- read_html(url)
+  
+  series_url <- html_page %>%
+    html_nodes(".data1 .left a") %>%
+    html_attr("href") 
+  
+  series_url <- series_url[!str_detect(series_url, pattern = "team")]
+  series_url <- str_c("http://www.espncricinfo.com", series_url)
+  
+  series_table <- html_page %>%
+    html_node("table") %>%
+    html_table(header = TRUE) %>%
+    select(c("series"=1,"season"=2,"winner"=4,"margin"=5))
+    
+  series_url <- bind_cols(series_url=series_url, series_table)
+  series_url
+}
+
+series_urls <- get_series_urls(url = "http://stats.espncricinfo.com/ci/content/records/335432.html")
+write.csv(series_urls, file = "series_urls.csv", row.names = F)
